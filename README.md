@@ -27,3 +27,8 @@ Benjamin P. Sandford, Steven G. Smith, Aimee H. Fullerton, Loren W. Stearman, Go
 #### Juvenile Fish Passage Facilty at Little Goose and Lower Granite Dams Separate-by-Code (SyC) Data
 - Access: Available via queries on [PTAGIS](https://www.ptagis.org)
 - Variables used: Tag code, length, and mass, for all recaptured Chinook salmon smolts, 2001-2011 (Little Goose), 2011-2024 (Lower Granite)
+
+## Management/Mission Implications
+- Describes new early life history diversity of Chinook salmonm, providing insights into how diversity might relate to population resiliency
+- Provides more information on timing and patterns of outmigration, informing life cycle models and other demographic models with better parameters
+- Synthesizes 30+ years of existing data to provide new insights into salmonid ecology
