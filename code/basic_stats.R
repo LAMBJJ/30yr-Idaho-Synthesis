@@ -1,28 +1,58 @@
+# Basic stats
 
 library(ggplot2)
 library(rlang)
+library(cluster)  
+library(tidyverse) 
 
 surv <- read.csv("data/est_survival.csv")
 arriv <- read.csv("data/granite_arrival_dates.csv")
 growth <- read.csv("data/growth_rates.csv")
 
-# Basic stats
-# group populations as in Crozier and Zabel 2006's cluster analysis, then compare survival among clusters
 
-site_map <- c(
-  "LA" = "C1", "SE" = "C1", "SF" = "C1", "VA" = "C1",
-  "CA" = "C2", "HE" = "C2", "EL" = "C2", "MA" = "C2", "BV" = "C2", "CH" = "C2", 
-  "BU" = "C3", "SU" = "C3",
-  "BL" = "C4", "LO" = "C4",
-  "CL" = "C5", "WC" = "C5" # adding Chamberlain (not in paper)
+fncCluster <- function(dat, var){
+  
+  # Format into year-by-sites matrix
+  df <- matrix(dat[,var], ncol = length(unique(dat$Site_ID)), byrow = T)
+  dimnames(df) <- list(unique(dat$Year), unique(dat$Site_ID))
+  
+  # Remove empty rows
+  df <- subset(df, rowSums(df, na.rm = T) > 0)
+  df <- t(df)
+  
+  # Scale the data if needed
+  #df <- scale(df)
+  
+  # Compute dissimilarity matrix (Euclidean distance)
+  dist_mat <- dist(df, method = "euclidean")
+  
+  # Hierarchical clustering (Ward's method)
+  hc_res <- hclust(dist_mat, method = "ward.D2")
+  
+  # Plot the Dendrogram
+  plot(hc_res, cex = 0.6, hang = -1, main = "Data Dendrogram")
+  rect.hclust(hc_res, k = 4, border = 2:4) # Highlight clusters
+  
+  # Group populations based on the result
+  site_map <- cutree(hc_res, k = 4)
+  
+  return(site_map)
+}
+  
+# group populations as in Crozier and Zabel 2006's cluster analysis, then compare survival among clusters
+site_map2 <- c(
+  "LA" = 1, "SE" = 1, "SF" = 1, "VA" = 1,
+  "CA" = 2, "HE" = 2, "EL" = 2, "MA" = 2, "BV" = 2, "CH" = 2, 
+  "BU" = 3, "SU" = 3,
+  "BL" = 4, "LO" = 4,
+  "CL" = 5, "WC" = 5 # adding Chamberlain & WF Chamberlain (not in paper)
 )
 
-
-fncClusterEval <- function(dat, var) {
+fncClusterEval <- function(dat, var, sm) {
   var_expr <- enquo(var)
   var_name <- rlang::as_label(var_expr)
   
-  dat$Cluster <- as.factor(site_map[dat$Site_ID])
+  dat$Cluster <- as.factor(sm[dat$Site_ID])
   
   p <- ggplot(dat, aes(x = Cluster, y = {{ var }}, fill = Cluster)) +
     geom_boxplot(outlier.colour = "gray", outlier.shape = 16) +
@@ -42,12 +72,18 @@ fncClusterEval <- function(dat, var) {
 }
 
 # Survival
-fncClusterEval(dat = surv, var = Est_survival)
+site_map1 <- fncCluster(dat = surv, var = "Est_survival")
+sort(site_map1)
+fncClusterEval(dat = surv, var = Est_survival, sm = site_map1)
 
 # Arrival timing
-fncClusterEval(dat = arriv, var = Median)
+site_map1 <- fncCluster(dat = arriv, var = "Median")
+sort(site_map1)
+fncClusterEval(dat = arriv, var = Median, sm = site_map1)
 
 # Growth
-fncClusterEval(dat = growth, var = Median)
+site_map1 <- fncCluster(dat = growth, var = "Median")
+sort(site_map1)
+fncClusterEval(dat = growth, var = Median, sm = site_map1)
 
 
