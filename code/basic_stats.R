@@ -4,12 +4,13 @@ library(ggplot2)
 library(rlang)
 library(cluster)  
 library(tidyverse) 
+library(factoextra)
 
 surv <- read.csv("data/est_survival.csv")
 arriv <- read.csv("data/granite_arrival_dates.csv")
 growth <- read.csv("data/growth_rates.csv")
 
-
+# Hierarchical agglomerative 'hclust'
 fncCluster <- function(dat, var){
   
   # Format into year-by-sites matrix
@@ -31,12 +32,51 @@ fncCluster <- function(dat, var){
   
   # Plot the Dendrogram
   plot(hc_res, cex = 0.6, hang = -1, main = "Data Dendrogram")
-  rect.hclust(hc_res, k = 4, border = 2:4) # Highlight clusters
+  rect.hclust(hc_res, k = 5, border = 2:5) # Highlight clusters
   
   # Group populations based on the result
-  site_map <- cutree(hc_res, k = 4)
+  site_map <- cutree(hc_res, k = 5)
   
   return(site_map)
+}
+
+# K-means
+fncCluster2 <- function(dat, var){
+  # Format into year-by-sites matrix
+  df <- matrix(dat[,var], ncol = length(unique(dat$Site_ID)), byrow = T)
+  dimnames(df) <- list(unique(dat$Year), unique(dat$Site_ID))
+  
+  # Remove empty rows
+  df <- subset(df, rowSums(df, na.rm = T) > 0)
+  df <- t(df)
+  
+  # Scale the data if needed
+  #df <- scale(df)
+  
+  # Impute to fill NAs (necessary for next step)
+  df_imputed <- as_tibble(df) %>%
+    mutate(across(everything(), ~replace_na(., median(., na.rm = TRUE))))
+  row.names(df_imputed) <- row.names(df)
+  
+  # Determine optimal clusters using the 'Elbow method'
+  fviz_nbclust(df_imputed, kmeans, method = "wss")
+  
+  # Run K-means
+  set.seed(123) # For reproducibility
+  km_res <- kmeans(df_imputed, centers = 5, nstart = 25)
+  
+  # Visualize
+  fviz_cluster(km_res, data = df_imputed, geom = "point",
+               ellipse.type = "convex", main = "K-means Clustering")
+  
+  km_assignments <- km_res$cluster
+  site_mapping_km <- as_tibble(df) %>%
+    mutate(Cluster = km_assignments) %>%
+    # If your sites have names in the row names, let's make them a column
+    rownames_to_column(var = "Site_Name")
+  print(sort(km_assignments))
+  
+  return(km_assignments)
 }
   
 # group populations as in Crozier and Zabel 2006's cluster analysis, then compare survival among clusters
@@ -73,6 +113,7 @@ fncClusterEval <- function(dat, var, sm) {
 
 # Survival
 site_map1 <- fncCluster(dat = surv, var = "Est_survival")
+site_map1 <- fncCluster2(dat = surv, var = "Est_survival") #get equivalent results
 sort(site_map1)
 fncClusterEval(dat = surv, var = Est_survival, sm = site_map1)
 
