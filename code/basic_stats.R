@@ -11,7 +11,7 @@ arriv <- read.csv("data/granite_arrival_dates.csv")
 growth <- read.csv("data/growth_rates.csv")
 
 # Hierarchical agglomerative 'hclust'
-fncCluster <- function(dat, var){
+fncCluster1 <- function(dat, var){
   
   # Format into year-by-sites matrix
   df <- matrix(dat[,var], ncol = length(unique(dat$Site_ID)), byrow = T)
@@ -74,7 +74,6 @@ fncCluster2 <- function(dat, var){
     mutate(Cluster = km_assignments) %>%
     # If your sites have names in the row names, let's make them a column
     rownames_to_column(var = "Site_Name")
-  print(sort(km_assignments))
   
   return(km_assignments)
 }
@@ -112,19 +111,26 @@ fncClusterEval <- function(dat, var, sm) {
 }
 
 # Survival
-site_map1 <- fncCluster(dat = surv, var = "Est_survival")
-site_map1 <- fncCluster2(dat = surv, var = "Est_survival") #get equivalent results
+site_map1 <- fncCluster1(dat = surv, var = "Est_survival")
+site_map2 <- fncCluster2(dat = surv, var = "Est_survival") #get equivalent results
 sort(site_map1)
+sort(site_map2)
 fncClusterEval(dat = surv, var = Est_survival, sm = site_map1)
+fncClusterEval(dat = surv, var = Est_survival, sm = site_map2)
 
 # Arrival timing
-site_map1 <- fncCluster(dat = arriv, var = "Median")
+site_map1 <- fncCluster1(dat = arriv, var = "Median")
+site_map2 <- fncCluster2(dat = arriv, var = "Median")
 sort(site_map1)
+sort(site_map2)
 fncClusterEval(dat = arriv, var = Median, sm = site_map1)
+fncClusterEval(dat = arriv, var = Median, sm = site_map2)
 
 # Growth
-site_map1 <- fncCluster(dat = growth, var = "Median")
+site_map1 <- fncCluster1(dat = growth, var = "Median")
+site_map2 <- fncCluster2(dat = growth, var = "Median")
 sort(site_map1)
+sort(site_map2)
 fncClusterEval(dat = growth, var = Median, sm = site_map1)
-
+fncClusterEval(dat = growth, var = Median, sm = site_map2)
 
