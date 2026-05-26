@@ -1,0 +1,23 @@
+Type,Code,Stream,Location,RKM,Lat,Lon
+IPTDS,VC2,Valley Creek,Valley Creek ,1,44.2219,-114.93146
+IPTDS,MAR,Marsh Creek,Lola Creek Campground,8,44.408682,-115.179828
+IPTDS,TAY,Big Creek,Taylor Ranch downstream array,11,45.103532,-114.853817
+IPTDS,KRS,SF Salmon River,Krassel Creek,65,44.978472,-115.726994
+IPTDS,ZEN,Lower Secesh River,Zena Creek Ranch,5,45.0333,-115.73302
+IPTDS,USE,Salmon River,Upper Salmon River upstream array,437,45.02853,-113.916319
+IPTDS,USI,Salmon River,Upper Salmon River downstream array,460,44.889763,-113.964145
+IPTDS,EDW,Big Creek,"Edwardsburg, Idaho",57,45.11178,-115.32691
+IPTDS,SFG,SF Salmon River,Guard Station Road Bridge,30,45.175659,-115.579712
+RST,VALEYC,Valley Creek,Sportsman’s access below  Crooked Creek,5,44.305811,-115.052554
+RST,BEARVC,Bear Valley Creek,Fir Creek Campground,6,44.374211,-115.396117
+RST,MARTR2,Marsh Creek,Lola Creek Campground,8,44.408447,-115.181647
+RST,MARTRP,Marsh Creek,Upstream of confluence with Cape Horn,11,44.393832,-115.167355
+RST,BIG2CT,Big Creek,Taylor Ranch,11,45.103578,-114.852514
+RST,SFSTRP,SF Salmon R,Knox Bridge,118,44.655515,-115.702395
+RST,SFSRKT,SF Salmon R,South Fork Salmon at Krassel,63,44.9898,-115.7249
+RST,LSFTRP,SF Salmon R,Lower South Fork Salmon River,61,45.014682,-115.715024
+RST,LAKEC,Lake Creek,Downstream of confluence with Bergdorf Creek,1,45.329059,-115.949204
+RST,SECESR,Secesh River,Chinook Campground,30,45.151953,-115.796847
+RST,SECTRP,Secesh River,Confluence ,7,45.059432,-115.75669
+RST,SALTRP,Salmon River,Lower Salmon River,103,45.662926,-116.292211
+RST,SNKTRP,Snake River,Lower Snake River,225,46.420697,-117.035851
