@@ -23,7 +23,7 @@ dat3 <- dat3[dat3$DateDetected >= min(dat1$DateDetected),]
 x3 <- dat3$DateDetected
 y3 <- dat3$Length
 
-png("plots4ms/instream_monitors2.png", width = 7, height = 6, units = "in", res = 600)
+png("plots/instream_monitors2.png", width = 7, height = 6, units = "in", res = 600)
 par(mar = c(3,5,2,1), oma = c(rep(0,4)), mfrow = c(2,1), cex.main = 0.9)
 plot(x1, y1, type = "n", las = 1, xlim = c(as.Date("2016-07-30"), as.Date("2017-05-24")), axes = F,
      ylab = "Observed passage numbers", main = "Valley Creek monitor, 2016-17", xlab = "", cex = 0.9, xaxt = 'n')
@@ -32,13 +32,13 @@ axis.Date(side = 1, x1, at = x_ticks); axis(side = 2, las = 1)
 rect(x_ticks[5], 0, x_ticks[9], (max(y1) + 5), col = "gray90", border = NA)
 arrows(x1, 0, x1, y1, code = 3, length = 0, angle = 90, col = "gray50")
 text(x_ticks[3], 28, "Fall")
-text(x_ticks[3], 25, "PSS = 22.8%", cex = 0.7)
+text(x_ticks[3], 25, "RSS = 22.8%", cex = 0.7)
 text(x_ticks[3], 23, "(13.4-33.5%)", cex = 0.7)
 text(x_ticks[7], 28, "Winter")
-text(x_ticks[7], 25, "PSS = 26.3%", cex = 0.7)
+text(x_ticks[7], 25, "RSS = 26.3%", cex = 0.7)
 text(x_ticks[7], 23, "(10.4-43.3%)", cex = 0.7)
 text(as.Date("2017-04-15"), 28, "Spring")
-text(as.Date("2017-04-15"), 25, "PSS = 53.6%", cex = 0.7)
+text(as.Date("2017-04-15"), 25, "RSS = 53.6%", cex = 0.7)
 text(as.Date("2017-04-15"), 23, "(11.9-109.2%)", cex = 0.7)
 box()
 
@@ -52,5 +52,5 @@ box()
 
 dev.off()
 
-write.csv(instream_detections, file = "plots4ms/instream_detections.csv")
-write.csv(instream_lengths, file = "plots4ms/instream_lengths.csv")
+write.csv(instream_detections, file = "plots/instream_detections.csv")
+write.csv(instream_lengths, file = "plots/instream_lengths.csv")
